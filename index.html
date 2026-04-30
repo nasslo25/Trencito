@@ -364,8 +364,9 @@
 
     </div>
 
-    <!-- CÓDIGO JS PRINCIPAL - LIMPIO Y ÚNICO -->
+    <!-- LÓGICA DEL JUEGO DIRECTA (SIN BASE DE DATOS) -->
     <script>
+        // Exponer funciones globales
         window.startWelcome = startWelcome;
         window.goToMenuGrade = goToMenuGrade;
         window.selectGrade = selectGrade;
@@ -418,6 +419,7 @@
             question: null
         };
 
+        // --- CONEXIÓN DIRECTA ENTRE PANTALLA Y CELULAR (PEERJS) ---
         let myPeer = null;
         let hostConnection = null; 
         
@@ -1054,6 +1056,10 @@
                         checkCompeteAnswer(data.team);
                     }
                 });
+            });
+            
+            myPeer.on('error', (err) => {
+                console.error("Error de PeerJS:", err);
             });
         }
 
