@@ -10,20 +10,21 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Librería para generar Códigos QR -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- Librería PeerJS para conexión directa de Celular a Pantalla (Sin bases de datos) -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
         
         body {
             font-family: 'Nunito', sans-serif;
-            background-color: #87CEEB; /* Azul cielo */
-            color: #1e3a8a; /* Azul oscuro */
+            background-color: #87CEEB;
+            color: #1e3a8a;
             overflow: hidden;
             user-select: none;
-            touch-action: manipulation; /* Evita zoom accidental en celulares */
+            touch-action: manipulation;
         }
 
-        /* Animaciones personalizadas */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px) scale(0.98); }
             to { opacity: 1; transform: translateY(0) scale(1); }
@@ -51,29 +52,18 @@
         }
         .animate-pulse-custom { animation: pulse-custom 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 
-        /* Estilos de fondo escolar */
-        .school-bg {
-            background: linear-gradient(to bottom, #87CEEB, #E0F6FF);
-        }
+        .school-bg { background: linear-gradient(to bottom, #87CEEB, #E0F6FF); }
         
-        /* Ocultar las flechas del input numérico */
         input[type=number]::-webkit-inner-spin-button, 
-        input[type=number]::-webkit-outer-spin-button { 
-            -webkit-appearance: none; 
-            margin: 0; 
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
+        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
 
-        /* Ajuste de Vistas para que ocupen exactamente 100% del contenedor sin scrollear */
         .view { display: none; width: 100%; height: 100%; }
         .view.active { display: flex; }
     </style>
 </head>
 <body class="h-screen w-screen flex items-center justify-center p-1 sm:p-2 selection:bg-blue-500/30">
 
-    <!-- PANTALLA DE INICIO -->
     <div id="welcome-overlay" class="fixed inset-0 z-[100] bg-blue-900 flex flex-col items-center justify-center text-center p-4 transition-opacity duration-500">
         <img src="logo%20mejorado.png" alt="Logo El Trencito" onerror="this.style.display='none'" class="w-32 h-32 md:w-48 md:h-48 object-contain mb-8 filter drop-shadow-lg animate-bounce" />
         <h2 class="text-3xl md:text-6xl font-black text-white mb-8 drop-shadow-md">¡Listos para aprender!</h2>
@@ -82,39 +72,30 @@
         </button>
     </div>
 
-    <!-- Fondo Escolar Animado -->
     <div id="clouds-container" class="fixed inset-0 overflow-hidden pointer-events-none z-0 school-bg"></div>
 
-    <!-- Botón de Sonido -->
     <button id="btn-sound" class="absolute top-2 right-2 sm:top-4 sm:right-4 z-50 bg-blue-600/10 hover:bg-blue-600/20 backdrop-blur-md p-2 sm:p-3 rounded-full text-blue-900 border border-blue-900/20 shadow-lg cursor-pointer transition-all">
         <i data-lucide="volume-2" id="icon-sound-on" class="w-5 h-5 sm:w-6 sm:h-6"></i>
         <i data-lucide="volume-x" id="icon-sound-off" class="w-5 h-5 sm:w-6 sm:h-6 text-red-500 hidden"></i>
     </button>
 
-    <!-- Créditos -->
     <div class="absolute bottom-1 w-full flex justify-center z-[150] pointer-events-none opacity-80 px-2">
         <span class="bg-white/40 backdrop-blur-sm text-blue-900/90 text-[9px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-sm border border-white/50 uppercase tracking-wider text-center line-clamp-1">
             Creado por Nasslo Antony Muñoz Saez - Ingeniero en ejecución informática -
         </span>
     </div>
 
-    <!-- CONTENEDOR PRINCIPAL DEL JUEGO -->
     <div id="app-container" class="relative z-10 w-full h-full flex justify-center pb-6 sm:pb-8 pt-2">
 
-        <!-- VISTA 1: MENÚ DE NIVELES -->
         <div id="view-menu-grade" class="view flex-col items-center justify-center animate-fade-in w-full max-w-4xl px-2">
             <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-yellow-500 mb-2 text-center filter drop-shadow-lg tracking-tight uppercase shrink-0">
                 El Trencito
             </h1>
             <img src="logo%20mejorado.png" alt="Logo El Trencito" onerror="this.style.display='none'" class="h-[12vh] min-h-[60px] max-h-[120px] object-contain my-2 filter drop-shadow-md hover:scale-105 transition-transform shrink-0" />
             <p class="text-sm sm:text-lg lg:text-xl text-blue-800 font-bold mb-4 text-center tracking-widest uppercase shrink-0">Escuela Municipal</p>
-            
-            <div id="grades-grid" class="flex-1 min-h-0 w-full grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 pb-2 overflow-y-auto no-scrollbar">
-                <!-- Generado por JS -->
-            </div>
+            <div id="grades-grid" class="flex-1 min-h-0 w-full grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 pb-2 overflow-y-auto no-scrollbar"></div>
         </div>
 
-        <!-- VISTA 2: MENÚ DE OPERACIONES -->
         <div id="view-menu-op" class="view flex-col items-center justify-center animate-fade-in w-full max-w-4xl px-2">
             <div class="w-full flex justify-start shrink-0">
                 <button onclick="goToMenuGrade(true)" class="flex items-center text-blue-700 font-bold mb-2 hover:text-blue-900 bg-white/50 px-3 py-1.5 rounded-full backdrop-blur-sm transition-all cursor-pointer border border-blue-300 shadow-sm text-sm sm:text-base">
@@ -124,13 +105,9 @@
             <div id="op-planet-emoji" class="text-6xl sm:text-7xl lg:text-8xl mb-2 animate-pulse-custom filter drop-shadow-lg shrink-0">🏫</div>
             <h2 class="text-2xl sm:text-3xl lg:text-5xl font-black text-blue-900 mb-1 text-center uppercase tracking-wide shrink-0">Elige tu Actividad</h2>
             <p id="op-destiny-text" class="text-xs sm:text-base lg:text-xl text-orange-600 font-bold mb-4 tracking-widest uppercase text-center shrink-0">Destino: Estación Inicial</p>
-            
-            <div id="ops-grid" class="flex-1 min-h-0 w-full flex flex-wrap justify-center gap-2 sm:gap-4 overflow-y-auto no-scrollbar pb-2 items-center content-center">
-                <!-- Generado por JS -->
-            </div>
+            <div id="ops-grid" class="flex-1 min-h-0 w-full flex flex-wrap justify-center gap-2 sm:gap-4 overflow-y-auto no-scrollbar pb-2 items-center content-center"></div>
         </div>
 
-        <!-- VISTA 3: JUGANDO (INDIVIDUAL) -->
         <div id="view-playing" class="view flex-col items-center w-full max-w-4xl animate-fade-in px-1 sm:px-2 justify-between">
             <div class="w-full shrink-0 flex justify-start mb-1">
                 <button onclick="goToMenuGrade(true)" class="flex items-center text-blue-700 font-bold hover:text-blue-900 bg-white/50 px-3 py-1 sm:px-4 sm:py-2 rounded-full backdrop-blur-sm transition-all cursor-pointer border border-blue-300 shadow-sm text-xs sm:text-sm">
@@ -146,7 +123,6 @@
                         <span id="ui-score" class="text-sm sm:text-lg font-black text-yellow-600">0</span>
                     </div>
                 </div>
-
                 <div class="flex flex-col items-center flex-1 px-4 sm:px-8">
                     <span id="ui-stage-text" class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider mb-1 text-center">Vía: Tramo 1 de 10</span>
                     <div class="w-full bg-gray-200 rounded-full h-2 sm:h-3 relative border border-gray-300 overflow-visible">
@@ -155,7 +131,6 @@
                         <div id="ui-planet-target" class="absolute top-1/2 -translate-y-1/2 right-0 translate-x-1/2 text-lg sm:text-xl filter drop-shadow-md">🏫</div>
                     </div>
                 </div>
-
                 <div class="flex flex-col items-center">
                     <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider mb-0.5">Vidas</span>
                     <div id="ui-lives-container" class="flex items-center space-x-0.5 bg-red-50 px-1.5 py-0.5 rounded-full border border-red-200"></div>
@@ -168,7 +143,6 @@
                 </div>
             </div>
 
-            <!-- CONTENEDOR DE LA PREGUNTA -->
             <div id="question-container" class="flex-1 min-h-0 relative w-full rounded-2xl sm:rounded-[2rem] shadow-lg p-3 sm:p-6 text-center transition-all duration-300 border-4 sm:border-[6px] border-blue-400 bg-white/90 backdrop-blur-xl flex flex-col justify-center items-center">
                 <div class="absolute top-0 left-4 right-4 h-1.5 bg-gray-200 rounded-b-lg overflow-hidden">
                     <div id="ui-timer-bar" class="h-full transition-all duration-75 bg-green-400" style="width: 100%"></div>
@@ -177,7 +151,6 @@
                 <div id="ui-alien" class="absolute -top-6 sm:-top-10 left-1/2 transform -translate-x-1/2 drop-shadow-xl transition-all duration-300 text-4xl sm:text-6xl animate-bounce">🚂</div>
                 <div id="ui-feedback-overlay" class="absolute inset-0 flex items-center justify-center z-0 opacity-40 hidden rounded-xl bg-white/50"></div>
 
-                <!-- Ecuación -->
                 <div id="equation-box" class="bg-blue-50 rounded-xl sm:rounded-2xl p-2 sm:p-4 border-2 sm:border-4 border-blue-100 inline-block relative z-10 w-full max-h-full transition-all shadow-inner overflow-hidden flex flex-col items-center justify-center">
                     <div class="flex items-center justify-center space-x-1 sm:space-x-4 drop-shadow-sm w-full h-full">
                         <div class="flex flex-col items-center min-w-[50px] sm:min-w-[80px]">
@@ -194,7 +167,6 @@
                 </div>
             </div>
 
-            <!-- Formulario de Input -->
             <form id="game-form" class="w-full shrink-0 flex flex-row space-x-2 sm:space-x-4 mt-2 sm:mt-4 h-[10vh] min-h-[50px] max-h-[80px]">
                 <input id="ui-input-answer" type="number" autocomplete="off" class="flex-1 w-full h-full bg-white border-2 sm:border-4 border-blue-300 text-blue-900 rounded-xl px-4 text-3xl sm:text-5xl font-black text-center focus:outline-none focus:border-yellow-400 focus:ring-4 disabled:opacity-70 shadow-inner transition-all placeholder-blue-200" placeholder="?"/>
                 <button id="ui-btn-submit" type="submit" class="h-full bg-gradient-to-b from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-white rounded-xl px-4 sm:px-8 font-black text-lg sm:text-2xl transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer shadow-xl border-b-2 sm:border-b-4 border-orange-600">
@@ -203,10 +175,9 @@
             </form>
         </div>
 
-        <!-- VISTA 6: JUGANDO (COMPETENCIA MULTIJUGADOR) -->
+        <!-- VISTA 6: JUGANDO (COMPETENCIA MULTIJUGADOR PANTALLA GRANDE) -->
         <div id="view-compete" class="view flex-col items-center w-full max-w-7xl animate-fade-in px-1 sm:px-2 justify-between">
             
-            <!-- Barra Superior (Shrink-0) -->
             <div class="shrink-0 w-full flex justify-between items-center mb-1 sm:mb-2 bg-white/80 backdrop-blur-md p-1.5 sm:p-3 rounded-xl sm:rounded-2xl border-2 border-blue-200 shadow-sm">
                 <button onclick="goToMenuGrade(true)" class="flex items-center text-blue-700 font-bold hover:text-blue-900 bg-white/50 px-2 sm:px-3 py-1 rounded-full border border-blue-300 transition-transform hover:scale-105 text-xs sm:text-sm">
                     <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i> Salir
@@ -215,7 +186,6 @@
                 <div class="w-4 sm:w-[80px] hidden sm:block"></div>
             </div>
 
-            <!-- Vía del Tren y Cuerda (Shrink-0) -->
             <div class="shrink-0 w-full relative h-[8vh] min-h-[40px] max-h-[80px] bg-white/50 backdrop-blur-sm rounded-full border-2 sm:border-4 border-blue-200 shadow-inner mb-1 sm:mb-2 flex items-center mx-auto overflow-hidden">
                 <div class="absolute left-0 w-[20%] h-full bg-red-500/20"></div>
                 <div class="absolute right-0 w-[20%] h-full bg-blue-500/20"></div>
@@ -225,7 +195,6 @@
                 <div class="absolute left-1 sm:left-4 top-1/2 transform -translate-y-1/2 z-20 text-[clamp(1.5rem,5vh,3rem)] drop-shadow-md"><span class="inline-block transform -scale-x-100">🏃‍♂️</span></div>
                 <div class="absolute right-1 sm:right-4 top-1/2 transform -translate-y-1/2 z-20 text-[clamp(1.5rem,5vh,3rem)] drop-shadow-md"><span class="inline-block">🏃‍♀️</span></div>
                 
-                <!-- Locomotora -->
                 <div id="compete-train" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-out z-10">
                     <div class="bg-white rounded-full p-1 shadow-md border-2 sm:border-[3px] border-orange-400 text-[clamp(1.2rem,4vh,2.5rem)] flex items-center justify-center w-[clamp(2rem,8vh,4rem)] h-[clamp(2rem,8vh,4rem)] relative">
                         <div class="absolute -left-1 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-[#8B4513] rounded-full z-[-1]"></div>
@@ -235,7 +204,6 @@
                 </div>
             </div>
 
-            <!-- Ecuación Central (Shrink-0) -->
             <div class="shrink-0 bg-blue-50 rounded-xl sm:rounded-2xl px-2 py-1 sm:py-2 border-2 sm:border-4 border-blue-200 shadow-md mb-1 sm:mb-2 text-center z-10 w-full max-w-xl h-[10vh] min-h-[50px] max-h-[100px] flex items-center justify-center">
                 <div class="flex items-center justify-center space-x-1 sm:space-x-3 w-full h-full">
                     <span id="compete-eq-num1" class="text-[clamp(1.5rem,6vh,4rem)] font-black text-blue-900 leading-none">?</span>
@@ -246,7 +214,6 @@
                 </div>
             </div>
 
-            <!-- Pantalla Dividida: Equipos y Teclados (FLEX-1 toma todo el espacio restante) -->
             <div class="flex-1 min-h-0 w-full flex flex-row gap-1 sm:gap-2 items-stretch justify-center relative pb-1">
                 
                 <!-- EQUIPO 1 (Rojo) -->
@@ -274,14 +241,13 @@
                         <button onclick="checkCompeteAnswer(1)" class="h-full flex items-center justify-center col-span-3 bg-red-500 border-b-2 sm:border-b-[3px] border-red-700 rounded-md text-xs sm:text-lg font-black text-white active:border-b-0 shadow-sm hover:bg-red-400 uppercase tracking-wider">Enviar</button>
                     </div>
 
-                    <!-- Código QR -->
+                    <!-- Código QR (Equipo Rojo) -->
                     <div id="qr-container-1" class="hidden md:flex flex-col items-center bg-white/50 p-2 sm:p-3 rounded-lg mt-2 w-auto shadow-inner border border-red-200 shrink-0">
                         <span class="text-[10px] sm:text-xs font-black text-red-800 mb-1 uppercase tracking-widest text-center leading-tight">Usa tu celular</span>
                         <div id="qr-code-1" class="bg-white p-2 rounded shadow-sm border-2 border-red-300 flex items-center justify-center"></div>
                     </div>
                 </div>
 
-                <!-- Divisor VS -->
                 <div class="shrink-0 flex flex-col justify-center h-full z-20 mx-0.5">
                     <div class="bg-yellow-400 text-yellow-900 font-black text-[10px] sm:text-lg p-1 sm:p-2 rounded-full border-2 border-white shadow-md transform rotate-12">VS</div>
                 </div>
@@ -311,7 +277,7 @@
                         <button onclick="checkCompeteAnswer(2)" class="h-full flex items-center justify-center col-span-3 bg-blue-500 border-b-2 sm:border-b-[3px] border-blue-700 rounded-md text-xs sm:text-lg font-black text-white active:border-b-0 shadow-sm hover:bg-blue-400 uppercase tracking-wider">Enviar</button>
                     </div>
 
-                    <!-- Código QR -->
+                    <!-- Código QR (Equipo Azul) -->
                     <div id="qr-container-2" class="hidden md:flex flex-col items-center bg-white/50 p-2 sm:p-3 rounded-lg mt-2 w-auto shadow-inner border border-blue-200 shrink-0">
                         <span class="text-[10px] sm:text-xs font-black text-blue-800 mb-1 uppercase tracking-widest text-center leading-tight">Usa tu celular</span>
                         <div id="qr-code-2" class="bg-white p-2 rounded shadow-sm border-2 border-blue-300 flex items-center justify-center"></div>
@@ -325,8 +291,8 @@
             <h1 class="text-3xl sm:text-5xl font-black text-white mb-2 drop-shadow-md tracking-widest shrink-0">EQUIPO <span id="remote-team-name"></span></h1>
             
             <div class="flex-1 w-full max-w-sm bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl flex flex-col items-center border-4 min-h-0">
-                <div class="shrink-0 w-full h-[10vh] min-h-[50px] bg-gray-100 border-4 border-gray-300 rounded-xl mb-4 flex items-center justify-center text-4xl font-black text-gray-800 shadow-inner overflow-hidden">
-                    <span id="remote-display-input" class="truncate px-2"></span>
+                <div class="shrink-0 w-full h-[10vh] min-h-[50px] bg-gray-100 border-4 border-gray-300 rounded-xl mb-4 flex items-center justify-center text-4xl font-black text-gray-800 shadow-inner overflow-hidden relative">
+                    <span id="remote-display-input" class="truncate px-2 transition-colors duration-300"></span>
                 </div>
                 
                 <div class="flex-1 min-h-0 grid grid-cols-3 grid-rows-5 gap-2 w-full">
@@ -398,14 +364,8 @@
 
     </div>
 
-    <!-- LÓGICA DEL JUEGO CON FIREBASE -->
-    <script type="module">
-        // Importaciones de Firebase (Nube en Tiempo Real)
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Exponer funciones globales para que el HTML pueda llamarlas
+    <!-- CÓDIGO JS PRINCIPAL - LIMPIO Y ÚNICO -->
+    <script>
         window.startWelcome = startWelcome;
         window.goToMenuGrade = goToMenuGrade;
         window.selectGrade = selectGrade;
@@ -417,10 +377,8 @@
         window.remoteKey = remoteKey;
         window.remoteSubmit = remoteSubmit;
 
-        // Inicializar iconos
         lucide.createIcons();
 
-        // --- DATOS Y CONFIGURACIÓN ---
         const GRADE_LEVELS = [
             { id: '1-2', label: '1º - 2º Básico', desc: 'Sumas y restas (hasta 20)', color: 'from-blue-400 to-blue-600', planet: '🏫', name: 'Estación Inicial' },
             { id: '3-4', label: '3º - 4º Básico', desc: 'Hasta 100 y Tablas', color: 'from-yellow-400 to-yellow-500', planet: '🚉', name: 'Estación Central' },
@@ -438,20 +396,6 @@
 
         const STAGES_TO_WIN = 10;
         
-        // =====================================================================
-        // ⚠️ ¡IMPORTANTE PARA QUE FUNCIONEN LOS QR EN LA ESCUELA! ⚠️
-        // Reemplaza la palabra "null" de abajo por el código que te dio Firebase.
-        // Debe quedar algo así:
-        // const MIS_CREDENCIALES_FIREBASE = {
-        //   apiKey: "AIzaSy...",
-        //   authDomain: "tu-proyecto.firebaseapp.com",
-        //   projectId: "tu-proyecto",
-        //   ...
-        // };
-        // =====================================================================
-        const MIS_CREDENCIALES_FIREBASE = null; 
-
-        // --- ESTADO DEL JUEGO LOCAL ---
         let state = {
             soundEnabled: true,
             selectedGrade: null,
@@ -474,42 +418,19 @@
             question: null
         };
 
-        // --- CONEXIÓN FIREBASE (PARA CELULARES) ---
-        let db = null;
-        let roomRef = null;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'trencito-app';
+        let myPeer = null;
+        let hostConnection = null; 
         
         const urlParams = new URLSearchParams(window.location.search);
-        const urlRoom = urlParams.get('room');
-        const urlTeam = urlParams.get('team');
+        const urlHost = urlParams.get('host');
+        const urlTeam = parseInt(urlParams.get('team'));
         let remoteCurrentInput = '';
 
-        try {
-            let configObj = null;
-            if (MIS_CREDENCIALES_FIREBASE) {
-                configObj = MIS_CREDENCIALES_FIREBASE;
-            } else if (typeof __firebase_config !== 'undefined') {
-                configObj = JSON.parse(__firebase_config);
-            }
-
-            if (configObj) {
-                const app = initializeApp(configObj);
-                const auth = getAuth(app);
-                db = getFirestore(app);
-                
-                signInAnonymously(auth).then(() => {
-                    if (urlRoom && urlTeam) {
-                        initRemoteControl(urlRoom, parseInt(urlTeam));
-                    }
-                });
-            }
-        } catch(e) {
-            console.warn("Base de datos no conectada.");
+        if (urlHost && urlTeam) {
+            initRemoteControl(urlHost, urlTeam);
         }
 
-        function initRemoteControl(roomCode, teamNum) {
-            roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomCode);
-            
+        function initRemoteControl(hostId, teamNum) {
             document.getElementById('welcome-overlay').style.display = 'none';
             document.getElementById('app-container').style.display = 'none';
             document.getElementById('clouds-container').style.display = 'none';
@@ -528,6 +449,29 @@
                 document.getElementById('remote-team-name').innerText = 'AZUL';
                 document.getElementById('remote-view').querySelector('.border-4').classList.add('border-blue-400');
             }
+
+            document.getElementById('remote-display-input').innerHTML = '<span class="text-lg text-gray-400">Conectando...</span>';
+
+            myPeer = new Peer();
+            myPeer.on('open', () => {
+                hostConnection = myPeer.connect(hostId);
+                
+                hostConnection.on('open', () => {
+                    document.getElementById('remote-display-input').innerText = ''; 
+                });
+
+                hostConnection.on('data', (data) => {
+                    if (data.type === 'reset') {
+                        remoteCurrentInput = '';
+                        document.getElementById('remote-display-input').innerText = '';
+                    } else if (data.type === 'shake' && data.team === urlTeam) {
+                        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+                        const disp = document.getElementById('remote-display-input').parentElement;
+                        disp.classList.add('bg-red-300');
+                        setTimeout(() => disp.classList.remove('bg-red-300'), 500);
+                    }
+                });
+            });
         }
 
         function remoteKey(val) {
@@ -537,22 +481,27 @@
                 if (remoteCurrentInput.length < 5) remoteCurrentInput += val;
             }
             document.getElementById('remote-display-input').innerText = remoteCurrentInput;
-            if (roomRef) updateDoc(roomRef, { [`team${urlTeam}Input`]: remoteCurrentInput });
+            
+            if (hostConnection && hostConnection.open) {
+                hostConnection.send({ type: 'sync', team: urlTeam, input: remoteCurrentInput });
+            }
         }
 
         function remoteSubmit() {
-            if (roomRef) {
-                updateDoc(roomRef, { 
-                    [`team${urlTeam}Input`]: remoteCurrentInput,
-                    [`team${urlTeam}Submit`]: Date.now() 
-                });
+            if (hostConnection && hostConnection.open) {
+                hostConnection.send({ type: 'submit', team: urlTeam });
             }
-            remoteCurrentInput = '';
-            document.getElementById('remote-display-input').innerText = '';
         }
 
+        function broadcastToRemotes(msg) {
+            if (!myPeer || !myPeer.connections) return;
+            for (let peerId in myPeer.connections) {
+                myPeer.connections[peerId].forEach(conn => {
+                    if (conn.open) conn.send(msg);
+                });
+            }
+        }
 
-        // --- SISTEMA DE AUDIO (Web Audio API) ---
         let audioCtx = null;
         
         function initAudio() {
@@ -567,7 +516,6 @@
         function playSound(type) {
             if (!state.soundEnabled) return;
             initAudio();
-            
             try {
                 const oscillator = audioCtx.createOscillator();
                 const gainNode = audioCtx.createGain();
@@ -629,14 +577,12 @@
                     oscillator.stop(now + 1);
                 }
             } catch (e) {
-                console.warn("Audio no soportado o interactuado");
+                console.warn("Audio no soportado");
             }
         }
 
-        // --- SÍNTESIS DE VOZ Y BIENVENIDA ---
         function speakText(text) {
             if (!state.soundEnabled) return; 
-            
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel(); 
                 const utterance = new SpeechSynthesisUtterance(text);
@@ -656,13 +602,11 @@
             speakText("Bienvenido al Trencito matemático, escoge la estación a que deseas viajar");
         }
 
-        // --- CONTROL DE VISTAS ---
         function showView(viewId) {
             document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
         }
 
-        // --- GENERACIÓN DE NUBES ---
         const cloudsContainer = document.getElementById('clouds-container');
         for(let i=0; i<15; i++) {
             const cloud = document.createElement('div');
@@ -677,7 +621,6 @@
             cloudsContainer.appendChild(cloud);
         }
 
-        // --- GENERAR MENÚS ---
         const gradesGrid = document.getElementById('grades-grid');
         GRADE_LEVELS.forEach(grade => {
             const btn = document.createElement('button');
@@ -696,7 +639,6 @@
             gradesGrid.appendChild(btn);
         });
 
-        // --- EVENTOS PRINCIPALES ---
         document.getElementById('btn-sound').addEventListener('click', () => {
             state.soundEnabled = !state.soundEnabled;
             if (state.soundEnabled) {
@@ -757,10 +699,6 @@
             showView('view-menu-grade');
         }
 
-
-        // ==========================================
-        //        LÓGICA JUEGO INDIVIDUAL
-        // ==========================================
         const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
         function generateQuestion() {
@@ -1070,9 +1008,8 @@
             if (input.value !== '') handleAnswer(input.value);
         });
 
-
         // ==========================================
-        //        LÓGICA MODO COMPETENCIA (2 PLAYERS) Y REMOTO
+        //        LÓGICA MODO COMPETENCIA (PANTALLA)
         // ==========================================
         
         function startCompeteMode() {
@@ -1083,74 +1020,41 @@
             showView('view-compete');
             generateCompeteQuestion();
 
-            // Activar Códigos QR si hay base de datos conectada
-            if (db) {
-                const roomId = Math.random().toString(36).substring(2, 6).toUpperCase();
-                roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
-                
-                setDoc(roomRef, {
-                    team1Input: '',
-                    team2Input: '',
-                    team1Submit: 0,
-                    team2Submit: 0
-                });
+            if (myPeer) myPeer.destroy();
 
+            document.getElementById('qr-container-1').classList.remove('hidden');
+            document.getElementById('qr-container-1').classList.add('flex');
+            document.getElementById('qr-container-2').classList.remove('hidden');
+            document.getElementById('qr-container-2').classList.add('flex');
+
+            document.getElementById('qr-code-1').innerHTML = '<span class="text-xs text-gray-500">Cargando código...</span>';
+            document.getElementById('qr-code-2').innerHTML = '<span class="text-xs text-gray-500">Cargando código...</span>';
+
+            myPeer = new Peer();
+            
+            myPeer.on('open', (id) => {
                 const baseUrl = window.location.href.split('?')[0];
-                const urlTeam1 = `${baseUrl}?room=${roomId}&team=1`;
-                const urlTeam2 = `${baseUrl}?room=${roomId}&team=2`;
-
-                document.getElementById('qr-container-1').classList.remove('hidden');
-                document.getElementById('qr-container-1').classList.add('flex');
-                document.getElementById('qr-container-2').classList.remove('hidden');
-                document.getElementById('qr-container-2').classList.add('flex');
+                const urlTeam1 = `${baseUrl}?host=${id}&team=1`;
+                const urlTeam2 = `${baseUrl}?host=${id}&team=2`;
 
                 document.getElementById('qr-code-1').innerHTML = '';
                 document.getElementById('qr-code-2').innerHTML = '';
 
-                // Aumentamos el tamaño de los QR para que sean fáciles de escanear desde lejos
                 new QRCode(document.getElementById('qr-code-1'), { text: urlTeam1, width: 140, height: 140 });
                 new QRCode(document.getElementById('qr-code-2'), { text: urlTeam2, width: 140, height: 140 });
+            });
 
-                let lastT1Submit = 0;
-                let lastT2Submit = 0;
-
-                onSnapshot(roomRef, (docSnap) => {
-                    if (!docSnap.exists()) return;
-                    const data = docSnap.data();
-                    
-                    if (data.team1Input !== undefined && data.team1Input !== competeState.t1Input) {
-                        competeState.t1Input = data.team1Input;
+            myPeer.on('connection', (conn) => {
+                conn.on('data', (data) => {
+                    if (data.type === 'sync') {
+                        if (data.team === 1) competeState.t1Input = data.input;
+                        if (data.team === 2) competeState.t2Input = data.input;
                         updateCompeteUI();
-                    }
-                    if (data.team2Input !== undefined && data.team2Input !== competeState.t2Input) {
-                        competeState.t2Input = data.team2Input;
-                        updateCompeteUI();
-                    }
-
-                    if (data.team1Submit > lastT1Submit) {
-                        lastT1Submit = data.team1Submit;
-                        checkCompeteAnswer(1);
-                    }
-                    if (data.team2Submit > lastT2Submit) {
-                        lastT2Submit = data.team2Submit;
-                        checkCompeteAnswer(2);
+                    } else if (data.type === 'submit') {
+                        checkCompeteAnswer(data.team);
                     }
                 });
-            } else {
-                const warningMsg = `
-                    <div class="text-center p-2">
-                        <span class="text-[10px] sm:text-sm text-red-600 font-bold block mb-1">⚠️ Falta Base de Datos</span>
-                        <span class="text-[8px] sm:text-[10px] text-blue-800 leading-tight">Debes pegar tus credenciales de Firebase en la variable MIS_CREDENCIALES_FIREBASE del código.</span>
-                    </div>
-                `;
-                document.getElementById('qr-container-1').innerHTML = warningMsg;
-                document.getElementById('qr-container-1').classList.remove('hidden');
-                document.getElementById('qr-container-1').classList.add('flex');
-                
-                document.getElementById('qr-container-2').innerHTML = warningMsg;
-                document.getElementById('qr-container-2').classList.remove('hidden');
-                document.getElementById('qr-container-2').classList.add('flex');
-            }
+            });
         }
 
         function generateCompeteQuestion() {
@@ -1222,7 +1126,6 @@
             if (team === 1) competeState.t1Input = current;
             else competeState.t2Input = current;
             
-            if (roomRef) updateDoc(roomRef, { [`team${team}Input`]: current });
             updateCompeteUI();
         }
 
@@ -1238,9 +1141,7 @@
                 competeState.t1Input = '';
                 competeState.t2Input = '';
                 
-                if (roomRef) {
-                    updateDoc(roomRef, { team1Input: '', team2Input: '' });
-                }
+                broadcastToRemotes({ type: 'reset' });
                 
                 if (Math.abs(competeState.trainPos) >= competeState.targetPos) {
                     setTimeout(() => doCompeteVictory(team), 400); 
@@ -1263,7 +1164,8 @@
                     setTimeout(() => disp.classList.remove('animate-shake', 'bg-blue-200'), 500);
                 }
                 
-                if (roomRef) updateDoc(roomRef, { [`team${team}Input`]: '' });
+                broadcastToRemotes({ type: 'reset' });
+                broadcastToRemotes({ type: 'shake', team: team });
 
                 updateCompeteUI();
                 
@@ -1286,7 +1188,6 @@
             showView('view-compete-victory');
         }
 
-        // Iniciar
         showView('view-menu-grade');
         document.body.addEventListener('touchmove', function(e) { e.preventDefault(); }, { passive: false });
 
