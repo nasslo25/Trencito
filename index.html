@@ -443,7 +443,7 @@
         let myPeer = null;
         let hostConnection = null; 
         
-        const urlParams = newSearchParams(window.location.search);
+        const urlParams = new URLSearchParams(window.location.search);
         const urlHost = urlParams.get('host');
         const urlTeam = parseInt(urlParams.get('team'));
         let remoteCurrentInput = '';
