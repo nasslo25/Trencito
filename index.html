@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Librería para generar Códigos QR -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <!-- Librería PeerJS para conexión directa de Celular a Pantalla (Sin bases de datos) -->
+    <!-- Librería PeerJS para conexión directa de Celular a Pantalla -->
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     
     <style>
@@ -64,7 +64,7 @@
 </head>
 <body class="h-screen w-screen flex items-center justify-center p-1 sm:p-2 selection:bg-blue-500/30">
 
-    <!-- PANTALLA DE INICIO -->
+    <!-- PANTALLA DE INICIO (Requiere clic para activar el audio) -->
     <div id="welcome-overlay" class="fixed inset-0 z-[100] bg-blue-900 flex flex-col items-center justify-center text-center p-4 transition-opacity duration-500">
         <img src="logo%20mejorado.png" alt="Logo El Trencito" onerror="this.style.display='none'" class="w-32 h-32 md:w-48 md:h-48 object-contain mb-8 filter drop-shadow-lg animate-bounce" />
         <h2 class="text-3xl md:text-6xl font-black text-white mb-8 drop-shadow-md">¡Listos para aprender!</h2>
@@ -247,7 +247,7 @@
                         <button onclick="checkCompeteAnswer(1)" class="h-full flex items-center justify-center col-span-3 bg-red-500 border-b-2 sm:border-b-[3px] border-red-700 rounded-md text-xs sm:text-lg font-black text-white active:border-b-0 shadow-sm hover:bg-red-400 uppercase tracking-wider">Enviar</button>
                     </div>
 
-                    <!-- Código QR -->
+                    <!-- Código QR (Equipo Rojo) -->
                     <div id="qr-container-1" class="hidden md:flex flex-col items-center bg-white/50 p-2 sm:p-3 rounded-lg mt-2 w-auto shadow-inner border border-red-200 shrink-0">
                         <span class="text-[10px] sm:text-xs font-black text-red-800 mb-1 uppercase tracking-widest text-center leading-tight">Usa tu celular</span>
                         <div id="qr-code-1" class="bg-white p-2 rounded shadow-sm border-2 border-red-300 flex items-center justify-center"></div>
@@ -292,31 +292,18 @@
             </div>
         </div>
 
-        <!-- VISTA 8: CONTROL REMOTO DEL CELULAR (AHORA SÍ INDEPENDIENTE) -->
-        <div id="remote-view" class="fixed inset-0 z-[300] hidden flex-col items-center justify-between p-4 h-full w-full bg-gray-900 transition-colors duration-300">
-            <h1 class="text-3xl sm:text-5xl font-black text-white mb-2 drop-shadow-md tracking-widest shrink-0">EQUIPO <span id="remote-team-name"></span></h1>
+        <!-- VISTA 7: VICTORIA COMPETENCIA -->
+        <div id="view-compete-victory" class="view flex-col items-center justify-center bg-white/95 backdrop-blur-xl p-6 sm:p-10 rounded-2xl sm:rounded-[3rem] shadow-2xl border-4 sm:border-8 border-yellow-400 text-center w-full max-w-xl animate-fade-in z-50">
+            <i data-lucide="trophy" class="w-20 h-20 sm:w-32 sm:h-32 text-yellow-500 mb-4 sm:mb-6 animate-bounce"></i>
+            <h2 class="text-2xl sm:text-4xl font-black text-blue-900 mb-1 sm:mb-2 uppercase tracking-widest">¡VICTORIA!</h2>
+            <h3 id="compete-vic-title" class="text-4xl sm:text-6xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r mb-6 sm:mb-10 uppercase drop-shadow-md pb-1 sm:pb-2">¡EQUIPO ROJO!</h3>
             
-            <div class="flex-1 w-full max-w-sm bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl flex flex-col items-center border-4 min-h-0">
-                <div class="shrink-0 w-full h-[10vh] min-h-[50px] bg-gray-100 border-4 border-gray-300 rounded-xl mb-4 flex items-center justify-center text-4xl font-black text-gray-800 shadow-inner overflow-hidden relative">
-                    <span id="remote-display-input" class="truncate px-2 transition-colors duration-300"></span>
-                </div>
-                
-                <div class="flex-1 min-h-0 grid grid-cols-3 grid-rows-5 gap-2 w-full">
-                    <button onclick="remoteKey('1')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">1</button>
-                    <button onclick="remoteKey('2')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">2</button>
-                    <button onclick="remoteKey('3')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">3</button>
-                    <button onclick="remoteKey('4')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">4</button>
-                    <button onclick="remoteKey('5')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">5</button>
-                    <button onclick="remoteKey('6')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">6</button>
-                    <button onclick="remoteKey('7')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">7</button>
-                    <button onclick="remoteKey('8')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">8</button>
-                    <button onclick="remoteKey('9')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">9</button>
-                    <button onclick="remoteKey('-')" class="h-full flex items-center justify-center bg-gray-200 border-b-4 border-gray-300 rounded-lg text-3xl font-black text-gray-800 active:border-b-0 hover:bg-gray-300 touch-manipulation">-</button>
-                    <button onclick="remoteKey('0')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">0</button>
-                    <button onclick="remoteKey('del')" class="h-full flex items-center justify-center bg-gray-200 border-b-4 border-gray-300 rounded-lg font-black text-gray-800 active:border-b-0 hover:bg-gray-300 touch-manipulation"><i data-lucide="delete" class="w-6 h-6"></i></button>
-                    <button onclick="remoteSubmit()" class="h-full flex items-center justify-center col-span-3 bg-green-500 border-b-4 border-green-700 rounded-lg text-2xl font-black text-white active:border-b-0 shadow-lg hover:bg-green-400 uppercase tracking-widest touch-manipulation">Enviar</button>
-                </div>
-            </div>
+            <button onclick="startCompeteMode()" class="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-white font-black text-xl sm:text-2xl py-4 sm:py-6 px-6 sm:px-10 rounded-xl sm:rounded-[2rem] w-full shadow-lg transition-transform hover:scale-105 cursor-pointer uppercase tracking-wider border-b-4 border-orange-600 mb-3 sm:mb-4">
+                REVANCHA 🚂
+            </button>
+            <button onclick="goToMenuGrade(true)" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold text-lg sm:text-xl py-3 sm:py-5 px-4 sm:px-6 rounded-xl sm:rounded-3xl w-full transition-all border-2 sm:border-4 border-blue-200 cursor-pointer">
+                Volver a la Escuela 🏫
+            </button>
         </div>
 
         <!-- VISTA 4: VICTORIA INDIVIDUAL -->
@@ -370,6 +357,32 @@
 
     </div> <!-- FIN CAJA PROYECTOR -->
 
+    <!-- VISTA 8: CONTROL REMOTO DEL CELULAR (COMPLETAMENTE INDEPENDIENTE) -->
+    <div id="remote-view" class="fixed inset-0 z-[300] hidden flex-col items-center justify-between p-4 h-[100dvh] w-screen bg-gray-900 transition-colors duration-300">
+        <h1 class="text-3xl sm:text-5xl font-black text-white mb-2 drop-shadow-md tracking-widest shrink-0">EQUIPO <span id="remote-team-name"></span></h1>
+        
+        <div class="flex-1 w-full max-w-sm bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl flex flex-col items-center border-4 min-h-0">
+            <div class="shrink-0 w-full h-[10vh] min-h-[50px] bg-gray-100 border-4 border-gray-300 rounded-xl mb-4 flex items-center justify-center text-4xl font-black text-gray-800 shadow-inner overflow-hidden relative">
+                <span id="remote-display-input" class="truncate px-2 transition-colors duration-300"></span>
+            </div>
+            
+            <div class="flex-1 min-h-0 grid grid-cols-3 grid-rows-5 gap-2 w-full">
+                <button onclick="remoteKey('1')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">1</button>
+                <button onclick="remoteKey('2')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">2</button>
+                <button onclick="remoteKey('3')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">3</button>
+                <button onclick="remoteKey('4')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">4</button>
+                <button onclick="remoteKey('5')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">5</button>
+                <button onclick="remoteKey('6')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">6</button>
+                <button onclick="remoteKey('7')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">7</button>
+                <button onclick="remoteKey('8')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">8</button>
+                <button onclick="remoteKey('9')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">9</button>
+                <button onclick="remoteKey('-')" class="h-full flex items-center justify-center bg-gray-200 border-b-4 border-gray-300 rounded-lg text-3xl font-black text-gray-800 active:border-b-0 hover:bg-gray-300 touch-manipulation">-</button>
+                <button onclick="remoteKey('0')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">0</button>
+                <button onclick="remoteKey('del')" class="h-full flex items-center justify-center bg-gray-200 border-b-4 border-gray-300 rounded-lg font-black text-gray-800 active:border-b-0 hover:bg-gray-300 touch-manipulation"><i data-lucide="delete" class="w-6 h-6"></i></button>
+                <button onclick="remoteSubmit()" class="h-full flex items-center justify-center col-span-3 bg-green-500 border-b-4 border-green-700 rounded-lg text-2xl font-black text-white active:border-b-0 shadow-lg hover:bg-green-400 uppercase tracking-widest touch-manipulation">Enviar</button>
+            </div>
+        </div>
+
     <!-- LÓGICA DEL JUEGO DIRECTA (SIN BASE DE DATOS) -->
     <script>
         // Exponer funciones globales
@@ -422,14 +435,15 @@
             targetPos: 5,
             t1Input: '',
             t2Input: '',
-            question: null
+            question: null,
+            isFinished: false
         };
 
         // --- CONEXIÓN DIRECTA ENTRE PANTALLA Y CELULAR (PEERJS) ---
         let myPeer = null;
         let hostConnection = null; 
         
-        const urlParams = new URLSearchParams(window.location.search);
+        const urlParams = newSearchParams(window.location.search);
         const urlHost = urlParams.get('host');
         const urlTeam = parseInt(urlParams.get('team'));
         let remoteCurrentInput = '';
@@ -477,6 +491,8 @@
                         const disp = document.getElementById('remote-display-input').parentElement;
                         disp.style.backgroundColor = '#fca5a5';
                         setTimeout(() => disp.style.backgroundColor = '#f3f4f6', 500);
+                    } else if (data.type === 'finish') {
+                        document.getElementById('remote-display-input').innerHTML = '<span class="text-lg text-gray-400">Juego Terminado</span>';
                     }
                 });
             });
@@ -1025,6 +1041,7 @@
             competeState.trainPos = 0;
             competeState.t1Input = '';
             competeState.t2Input = '';
+            competeState.isFinished = false; // Reiniciar estado
             showView('view-compete');
             generateCompeteQuestion();
 
@@ -1041,6 +1058,7 @@
             myPeer = new Peer();
             
             myPeer.on('open', (id) => {
+                // Truco para capturar la URL base correctamente sin parámetros extra
                 const baseUrl = window.location.href.split('?')[0];
                 const urlTeam1 = `${baseUrl}?host=${id}&team=1`;
                 const urlTeam2 = `${baseUrl}?host=${id}&team=2`;
@@ -1126,6 +1144,8 @@
         }
 
         function competeInput(team, val) {
+            if (competeState.isFinished) return; // Bloquear ingreso si ya terminó
+
             playSound('click');
             let current = team === 1 ? competeState.t1Input : competeState.t2Input;
             
@@ -1142,6 +1162,8 @@
         }
 
         function checkCompeteAnswer(team) {
+            if (competeState.isFinished) return; // Bloquear si el juego ya acabó
+            
             const input = team === 1 ? competeState.t1Input : competeState.t2Input;
             if (input === '') return;
             
@@ -1156,6 +1178,8 @@
                 broadcastToRemotes({ type: 'reset' });
                 
                 if (Math.abs(competeState.trainPos) >= competeState.targetPos) {
+                    competeState.isFinished = true; // DETENER EL JUEGO
+                    broadcastToRemotes({ type: 'finish' });
                     setTimeout(() => doCompeteVictory(team), 400); 
                 } else {
                     generateCompeteQuestion(); 
@@ -1182,7 +1206,9 @@
                 updateCompeteUI();
                 
                 if (Math.abs(competeState.trainPos) >= competeState.targetPos) {
+                    competeState.isFinished = true; // DETENER EL JUEGO
                     const winner = team === 1 ? 2 : 1;
+                    broadcastToRemotes({ type: 'finish' });
                     setTimeout(() => doCompeteVictory(winner), 400); 
                 }
             }
