@@ -64,6 +64,7 @@
 </head>
 <body class="h-screen w-screen flex items-center justify-center p-1 sm:p-2 selection:bg-blue-500/30">
 
+    <!-- PANTALLA DE INICIO -->
     <div id="welcome-overlay" class="fixed inset-0 z-[100] bg-blue-900 flex flex-col items-center justify-center text-center p-4 transition-opacity duration-500">
         <img src="logo%20mejorado.png" alt="Logo El Trencito" onerror="this.style.display='none'" class="w-32 h-32 md:w-48 md:h-48 object-contain mb-8 filter drop-shadow-lg animate-bounce" />
         <h2 class="text-3xl md:text-6xl font-black text-white mb-8 drop-shadow-md">¡Listos para aprender!</h2>
@@ -72,6 +73,7 @@
         </button>
     </div>
 
+    <!-- FONDO Y BOTONES GLOBALES -->
     <div id="clouds-container" class="fixed inset-0 overflow-hidden pointer-events-none z-0 school-bg"></div>
 
     <button id="btn-sound" class="absolute top-2 right-2 sm:top-4 sm:right-4 z-50 bg-blue-600/10 hover:bg-blue-600/20 backdrop-blur-md p-2 sm:p-3 rounded-full text-blue-900 border border-blue-900/20 shadow-lg cursor-pointer transition-all">
@@ -85,8 +87,10 @@
         </span>
     </div>
 
+    <!-- CAJA DEL PROYECTOR / JUEGO PRINCIPAL -->
     <div id="app-container" class="relative z-10 w-full h-full flex justify-center pb-6 sm:pb-8 pt-2">
 
+        <!-- VISTA 1: MENÚ DE NIVELES -->
         <div id="view-menu-grade" class="view flex-col items-center justify-center animate-fade-in w-full max-w-4xl px-2">
             <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-yellow-500 mb-2 text-center filter drop-shadow-lg tracking-tight uppercase shrink-0">
                 El Trencito
@@ -96,6 +100,7 @@
             <div id="grades-grid" class="flex-1 min-h-0 w-full grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 pb-2 overflow-y-auto no-scrollbar"></div>
         </div>
 
+        <!-- VISTA 2: MENÚ DE OPERACIONES -->
         <div id="view-menu-op" class="view flex-col items-center justify-center animate-fade-in w-full max-w-4xl px-2">
             <div class="w-full flex justify-start shrink-0">
                 <button onclick="goToMenuGrade(true)" class="flex items-center text-blue-700 font-bold mb-2 hover:text-blue-900 bg-white/50 px-3 py-1.5 rounded-full backdrop-blur-sm transition-all cursor-pointer border border-blue-300 shadow-sm text-sm sm:text-base">
@@ -108,6 +113,7 @@
             <div id="ops-grid" class="flex-1 min-h-0 w-full flex flex-wrap justify-center gap-2 sm:gap-4 overflow-y-auto no-scrollbar pb-2 items-center content-center"></div>
         </div>
 
+        <!-- VISTA 3: JUGANDO (INDIVIDUAL) -->
         <div id="view-playing" class="view flex-col items-center w-full max-w-4xl animate-fade-in px-1 sm:px-2 justify-between">
             <div class="w-full shrink-0 flex justify-start mb-1">
                 <button onclick="goToMenuGrade(true)" class="flex items-center text-blue-700 font-bold hover:text-blue-900 bg-white/50 px-3 py-1 sm:px-4 sm:py-2 rounded-full backdrop-blur-sm transition-all cursor-pointer border border-blue-300 shadow-sm text-xs sm:text-sm">
@@ -286,33 +292,6 @@
             </div>
         </div>
 
-        <!-- VISTA 8: CONTROL REMOTO (Solo visible en celular escaneado) -->
-        <div id="remote-view" class="fixed inset-0 z-[300] hidden flex-col items-center justify-between p-4 h-full w-full">
-            <h1 class="text-3xl sm:text-5xl font-black text-white mb-2 drop-shadow-md tracking-widest shrink-0">EQUIPO <span id="remote-team-name"></span></h1>
-            
-            <div class="flex-1 w-full max-w-sm bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl flex flex-col items-center border-4 min-h-0">
-                <div class="shrink-0 w-full h-[10vh] min-h-[50px] bg-gray-100 border-4 border-gray-300 rounded-xl mb-4 flex items-center justify-center text-4xl font-black text-gray-800 shadow-inner overflow-hidden relative">
-                    <span id="remote-display-input" class="truncate px-2 transition-colors duration-300"></span>
-                </div>
-                
-                <div class="flex-1 min-h-0 grid grid-cols-3 grid-rows-5 gap-2 w-full">
-                    <button onclick="remoteKey('1')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">1</button>
-                    <button onclick="remoteKey('2')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">2</button>
-                    <button onclick="remoteKey('3')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">3</button>
-                    <button onclick="remoteKey('4')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">4</button>
-                    <button onclick="remoteKey('5')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">5</button>
-                    <button onclick="remoteKey('6')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">6</button>
-                    <button onclick="remoteKey('7')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">7</button>
-                    <button onclick="remoteKey('8')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">8</button>
-                    <button onclick="remoteKey('9')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">9</button>
-                    <button onclick="remoteKey('-')" class="h-full flex items-center justify-center bg-gray-200 border-b-4 border-gray-300 rounded-lg text-3xl font-black text-gray-800 active:border-b-0 hover:bg-gray-300 touch-manipulation">-</button>
-                    <button onclick="remoteKey('0')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">0</button>
-                    <button onclick="remoteKey('del')" class="h-full flex items-center justify-center bg-gray-200 border-b-4 border-gray-300 rounded-lg font-black text-gray-800 active:border-b-0 hover:bg-gray-300 touch-manipulation"><i data-lucide="delete" class="w-6 h-6"></i></button>
-                    <button onclick="remoteSubmit()" class="h-full flex items-center justify-center col-span-3 bg-green-500 border-b-4 border-green-700 rounded-lg text-2xl font-black text-white active:border-b-0 shadow-lg hover:bg-green-400 uppercase tracking-widest touch-manipulation">Enviar</button>
-                </div>
-            </div>
-        </div>
-
         <!-- VISTA 4: VICTORIA INDIVIDUAL -->
         <div id="view-victory" class="view flex-col items-center justify-center bg-white/95 backdrop-blur-xl p-4 sm:p-8 rounded-2xl shadow-2xl border-4 border-yellow-400 text-center w-full max-w-xl animate-fade-in">
             <div class="relative">
@@ -362,7 +341,33 @@
             </div>
         </div>
 
-    </div>
+    </div> <!-- FIN CAJA PROYECTOR -->
+
+    <!-- VISTA 8: CONTROL REMOTO DEL CELULAR (AHORA SÍ INDEPENDIENTE) -->
+    <div id="remote-view" class="fixed inset-0 z-[300] hidden flex-col items-center justify-between p-4 h-full w-full bg-gray-900 transition-colors duration-300">
+        <h1 class="text-3xl sm:text-5xl font-black text-white mb-2 drop-shadow-md tracking-widest shrink-0">EQUIPO <span id="remote-team-name"></span></h1>
+        
+        <div class="flex-1 w-full max-w-sm bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-2xl flex flex-col items-center border-4 min-h-0">
+            <div class="shrink-0 w-full h-[10vh] min-h-[50px] bg-gray-100 border-4 border-gray-300 rounded-xl mb-4 flex items-center justify-center text-4xl font-black text-gray-800 shadow-inner overflow-hidden relative">
+                <span id="remote-display-input" class="truncate px-2 transition-colors duration-300"></span>
+            </div>
+            
+            <div class="flex-1 min-h-0 grid grid-cols-3 grid-rows-5 gap-2 w-full">
+                <button onclick="remoteKey('1')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">1</button>
+                <button onclick="remoteKey('2')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">2</button>
+                <button onclick="remoteKey('3')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">3</button>
+                <button onclick="remoteKey('4')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">4</button>
+                <button onclick="remoteKey('5')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">5</button>
+                <button onclick="remoteKey('6')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">6</button>
+                <button onclick="remoteKey('7')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">7</button>
+                <button onclick="remoteKey('8')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">8</button>
+                <button onclick="remoteKey('9')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">9</button>
+                <button onclick="remoteKey('-')" class="h-full flex items-center justify-center bg-gray-200 border-b-4 border-gray-300 rounded-lg text-3xl font-black text-gray-800 active:border-b-0 hover:bg-gray-300 touch-manipulation">-</button>
+                <button onclick="remoteKey('0')" class="h-full flex items-center justify-center bg-white border-b-4 border-gray-200 rounded-lg text-2xl font-black text-gray-700 active:border-b-0 hover:bg-gray-50 touch-manipulation">0</button>
+                <button onclick="remoteKey('del')" class="h-full flex items-center justify-center bg-gray-200 border-b-4 border-gray-300 rounded-lg font-black text-gray-800 active:border-b-0 hover:bg-gray-300 touch-manipulation"><i data-lucide="delete" class="w-6 h-6"></i></button>
+                <button onclick="remoteSubmit()" class="h-full flex items-center justify-center col-span-3 bg-green-500 border-b-4 border-green-700 rounded-lg text-2xl font-black text-white active:border-b-0 shadow-lg hover:bg-green-400 uppercase tracking-widest touch-manipulation">Enviar</button>
+            </div>
+        </div>
 
     <!-- LÓGICA DEL JUEGO DIRECTA (SIN BASE DE DATOS) -->
     <script>
@@ -443,13 +448,13 @@
             remoteView.classList.add('flex');
 
             if (teamNum === 1) {
-                remoteView.classList.add('bg-red-600');
+                remoteView.style.backgroundColor = '#dc2626'; // bg-red-600
                 document.getElementById('remote-team-name').innerText = 'ROJO';
-                document.getElementById('remote-view').querySelector('.border-4').classList.add('border-red-400');
+                document.getElementById('remote-view').querySelector('.border-4').style.borderColor = '#f87171';
             } else {
-                remoteView.classList.add('bg-blue-600');
+                remoteView.style.backgroundColor = '#2563eb'; // bg-blue-600
                 document.getElementById('remote-team-name').innerText = 'AZUL';
-                document.getElementById('remote-view').querySelector('.border-4').classList.add('border-blue-400');
+                document.getElementById('remote-view').querySelector('.border-4').style.borderColor = '#60a5fa';
             }
 
             document.getElementById('remote-display-input').innerHTML = '<span class="text-lg text-gray-400">Conectando...</span>';
@@ -469,8 +474,8 @@
                     } else if (data.type === 'shake' && data.team === urlTeam) {
                         if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
                         const disp = document.getElementById('remote-display-input').parentElement;
-                        disp.classList.add('bg-red-300');
-                        setTimeout(() => disp.classList.remove('bg-red-300'), 500);
+                        disp.style.backgroundColor = '#fca5a5';
+                        setTimeout(() => disp.style.backgroundColor = '#f3f4f6', 500);
                     }
                 });
             });
