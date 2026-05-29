@@ -81,12 +81,6 @@
         <i data-lucide="volume-x" id="icon-sound-off" class="w-5 h-5 sm:w-6 sm:h-6 text-red-500 hidden"></i>
     </button>
 
-    <div class="absolute bottom-1 w-full flex justify-center z-[150] pointer-events-none opacity-80 px-2">
-        <span class="bg-white/40 backdrop-blur-sm text-blue-900/90 text-[9px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-sm border border-white/50 uppercase tracking-wider text-center line-clamp-1">
-            Creado por Nasslo Antony Muñoz Saez - Ingeniero en ejecución informática -
-        </span>
-    </div>
-
     <!-- CAJA DEL PROYECTOR / JUEGO PRINCIPAL -->
     <div id="app-container" class="relative z-10 w-full h-full flex justify-center pb-6 sm:pb-8 pt-2">
 
@@ -158,7 +152,9 @@
                 <div id="ui-feedback-overlay" class="absolute inset-0 flex items-center justify-center z-0 opacity-40 hidden rounded-xl bg-white/50"></div>
 
                 <div id="equation-box" class="bg-blue-50 rounded-xl sm:rounded-2xl p-2 sm:p-4 border-2 sm:border-4 border-blue-100 inline-block relative z-10 w-full max-h-full transition-all shadow-inner overflow-hidden flex flex-col items-center justify-center">
-                    <div class="flex items-center justify-center space-x-1 sm:space-x-4 drop-shadow-sm w-full h-full">
+                    
+                    <!-- Layout Matemático Regular -->
+                    <div id="math-layout" class="flex items-center justify-center space-x-1 sm:space-x-4 drop-shadow-sm w-full h-full">
                         <div class="flex flex-col items-center min-w-[50px] sm:min-w-[80px]">
                             <span id="ui-num1" class="text-[clamp(2.5rem,8vh,6rem)] font-black text-blue-900 tracking-wider leading-none">1</span>
                             <div id="ui-vis1" class="flex flex-wrap justify-center gap-0.5 mt-1 text-[clamp(0.8rem,2vh,1.5rem)] max-w-[100px]"></div>
@@ -170,6 +166,13 @@
                         </div>
                         <span id="ui-equals" class="text-[clamp(3rem,9vh,7rem)] font-black text-orange-500 tracking-wider leading-none drop-shadow-md">=</span>
                     </div>
+
+                    <!-- Layout Geométrico -->
+                    <div id="geometry-layout" class="hidden flex flex-col items-center justify-center space-y-2 w-full h-full animate-fade-in">
+                        <div id="ui-geom-svg-container" class="flex items-center justify-center drop-shadow-md"></div>
+                        <p id="ui-geom-question-text" class="text-sm sm:text-lg md:text-xl font-bold text-blue-900 mt-2 bg-white/60 px-4 py-1.5 rounded-full shadow-sm text-center leading-tight"></p>
+                    </div>
+
                 </div>
             </div>
 
@@ -210,13 +213,19 @@
                 </div>
             </div>
 
-            <div class="shrink-0 bg-blue-50 rounded-xl sm:rounded-2xl px-2 py-1 sm:py-2 border-2 sm:border-4 border-blue-200 shadow-md mb-1 sm:mb-2 text-center z-10 w-full max-w-xl h-[10vh] min-h-[50px] max-h-[100px] flex items-center justify-center">
-                <div class="flex items-center justify-center space-x-1 sm:space-x-3 w-full h-full">
+            <div id="compete-eq-box" class="shrink-0 bg-blue-50 rounded-xl sm:rounded-2xl px-2 py-1 sm:py-2 border-2 sm:border-4 border-blue-200 shadow-md mb-1 sm:mb-2 text-center z-10 w-full max-w-xl min-h-[50px] flex flex-col items-center justify-center">
+                <!-- Competencia Operaciones -->
+                <div id="compete-math-layout" class="flex items-center justify-center space-x-1 sm:space-x-3 w-full h-full">
                     <span id="compete-eq-num1" class="text-[clamp(1.5rem,6vh,4rem)] font-black text-blue-900 leading-none">?</span>
                     <span id="compete-eq-symbol" class="text-[clamp(1.5rem,6vh,4rem)] font-black text-orange-500 leading-none">+</span>
                     <span id="compete-eq-num2" class="text-[clamp(1.5rem,6vh,4rem)] font-black text-blue-900 leading-none">?</span>
                     <span class="text-[clamp(1.5rem,6vh,4rem)] font-black text-orange-500 leading-none">=</span>
                     <span class="text-[clamp(1.5rem,6vh,4rem)] font-black text-gray-400 leading-none">?</span>
+                </div>
+                <!-- Competencia Geometría -->
+                <div id="compete-geometry-layout" class="hidden flex flex-col items-center justify-center space-y-1 w-full animate-fade-in">
+                    <div id="compete-geom-svg-container" class="flex items-center justify-center drop-shadow-sm scale-90"></div>
+                    <p id="compete-geom-question-text" class="text-xs sm:text-sm font-bold text-blue-900 bg-white/60 px-2 py-0.5 rounded-full shadow-sm text-center leading-tight"></p>
                 </div>
             </div>
 
@@ -382,6 +391,16 @@
                 <button onclick="remoteSubmit()" class="h-full flex items-center justify-center col-span-3 bg-green-500 border-b-4 border-green-700 rounded-lg text-2xl font-black text-white active:border-b-0 shadow-lg hover:bg-green-400 uppercase tracking-widest touch-manipulation">Enviar</button>
             </div>
         </div>
+    </div>
+
+    <!-- BLOQUE DE FIRMA ELEGANTEMENTE UBICADO -->
+    <div class="fixed bottom-4 right-4 md:bottom-6 md:right-8 opacity-80 hover:opacity-100 transition-opacity duration-500 z-50 print:hidden pointer-events-none select-none">
+        <div class="flex flex-col items-end">
+            <span class="text-[0.65rem] text-slate-600 uppercase tracking-widest font-sans mb-[-4px]">Creada por</span>
+            <span class="text-2xl text-blue-900 font-bold drop-shadow-sm" style="font-family: 'Brush Script MT', 'Lucida Handwriting', 'Great Vibes', cursive;">Nasslo Muñoz</span>
+            <span class="text-[0.6rem] text-slate-500 font-sans tracking-widest uppercase mt-1">Ingeniero Informático</span>
+        </div>
+    </div>
 
     <!-- LÓGICA DEL JUEGO DIRECTA (SIN BASE DE DATOS) -->
     <script>
@@ -400,10 +419,10 @@
         lucide.createIcons();
 
         const GRADE_LEVELS = [
-            { id: '1-2', label: '1º - 2º Básico', desc: 'Sumas y restas (hasta 20)', color: 'from-blue-400 to-blue-600', planet: '🏫', name: 'Estación Inicial' },
-            { id: '3-4', label: '3º - 4º Básico', desc: 'Hasta 100 y Tablas', color: 'from-yellow-400 to-yellow-500', planet: '🚉', name: 'Estación Central' },
-            { id: '5-6', label: '5º - 6º Básico', desc: 'Multiplicación y División', color: 'from-orange-400 to-orange-500', planet: '🛤️', name: 'Estación Avanzada' },
-            { id: '7-8', label: '7º - 8º Básico', desc: 'Mentales y Negativos', color: 'from-blue-600 to-blue-800', planet: '🚂', name: 'Estación Final' }
+            { id: '1-2', label: '1º - 2º Básico', desc: 'Sumas, restas y figuras básicas', color: 'from-blue-400 to-blue-600', planet: '🏫', name: 'Estación Inicial' },
+            { id: '3-4', label: '3º - 4º Básico', desc: 'Hasta 100, Tablas y Perímetros', color: 'from-yellow-400 to-yellow-500', planet: '🚉', name: 'Estación Central' },
+            { id: '5-6', label: '5º - 6º Básico', desc: 'Multiplicaciones, Divisiones y Áreas', color: 'from-orange-400 to-orange-500', planet: '🛤️', name: 'Estación Avanzada' },
+            { id: '7-8', label: '7º - 8º Básico', desc: 'Mentales, Pitágoras y Ángulos', color: 'from-blue-600 to-blue-800', planet: '🚂', name: 'Estación Final' }
         ];
 
         const OPERATIONS = [
@@ -411,8 +430,184 @@
             { id: 'sub', label: 'Resta', symbol: '-', emoji: '➖' },
             { id: 'mul', label: 'Multiplicación', symbol: 'x', emoji: '✖️' },
             { id: 'div', label: 'División', symbol: '÷', emoji: '➗' },
+            { id: 'geom', label: 'Geometría', symbol: '📐', emoji: '📐' },
             { id: 'mix', label: '¡Sorpresa!', symbol: '?', emoji: '🎲' }
         ];
+
+        // --- PREGUNTAS DE GEOMETRÍA POR NIVEL (Vectores SVG nítidos e interactivos) ---
+        const GEOMETRY_QUESTIONS = {
+            '1-2': [
+                {
+                    shape: 'triangle',
+                    text: '¿Cuántos lados tiene el triángulo?',
+                    answer: 3,
+                    svg: `<svg class="w-24 h-24 sm:w-32 sm:h-32" viewBox="0 0 100 100"><polygon points="50,15 15,85 85,85" fill="#3b82f6" stroke="#1d4ed8" stroke-width="4"/></svg>`
+                },
+                {
+                    shape: 'square',
+                    text: '¿Cuántos lados tiene el cuadrado?',
+                    answer: 4,
+                    svg: `<svg class="w-24 h-24 sm:w-32 sm:h-32" viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="4" fill="#10b981" stroke="#047857" stroke-width="4"/></svg>`
+                },
+                {
+                    shape: 'circle',
+                    text: '¿Cuántos lados rectos tiene el círculo?',
+                    answer: 0,
+                    svg: `<svg class="w-24 h-24 sm:w-32 sm:h-32" viewBox="0 0 100 100"><circle cx="50" cy="50" r="35" fill="#ec4899" stroke="#be185d" stroke-width="4"/></svg>`
+                },
+                {
+                    shape: 'rectangle',
+                    text: '¿Cuántos vértices (esquinas) tiene el rectángulo?',
+                    answer: 4,
+                    svg: `<svg class="w-24 h-24 sm:w-32 sm:h-32" viewBox="0 0 120 100"><rect x="15" y="25" width="90" height="50" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="4"/></svg>`
+                },
+                {
+                    shape: 'triangle_vertices',
+                    text: '¿Cuántas esquinas (vértices) tiene el triángulo?',
+                    answer: 3,
+                    svg: `<svg class="w-24 h-24 sm:w-32 sm:h-32" viewBox="0 0 100 100"><polygon points="50,15 15,85 85,85" fill="#3b82f6" stroke="#1d4ed8" stroke-width="4"/></svg>`
+                }
+            ],
+            '3-4': [
+                {
+                    shape: 'rectangle_p1',
+                    text: '¿Cuál es el perímetro del rectángulo? (Lados: 6 y 3)',
+                    answer: 18,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 140 100">
+                        <rect x="25" y="25" width="90" height="50" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="4"/>
+                        <text x="70" y="20" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="middle">6 cm</text>
+                        <text x="120" y="55" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="start">3 cm</text>
+                    </svg>`
+                },
+                {
+                    shape: 'square_p1',
+                    text: '¿Cuál es el perímetro del cuadrado si su lado mide 5 cm?',
+                    answer: 20,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 100 100">
+                        <rect x="20" y="20" width="60" height="60" rx="4" fill="#10b981" stroke="#047857" stroke-width="4"/>
+                        <text x="50" y="15" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="middle">5 cm</text>
+                    </svg>`
+                },
+                {
+                    shape: 'triangle_p1',
+                    text: '¿Cuál es el perímetro del triángulo si cada lado mide 7 cm?',
+                    answer: 21,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 100 100">
+                        <polygon points="50,15 15,85 85,85" fill="#3b82f6" stroke="#1d4ed8" stroke-width="4"/>
+                        <text x="50" y="10" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="middle">7 cm</text>
+                    </svg>`
+                },
+                {
+                    shape: 'rectangle_p2',
+                    text: '¿Cuál es el perímetro del rectángulo? (Lados: 8 y 4)',
+                    answer: 24,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 140 100">
+                        <rect x="25" y="25" width="90" height="50" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="4"/>
+                        <text x="70" y="20" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="middle">8 cm</text>
+                        <text x="120" y="55" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="start">4 cm</text>
+                    </svg>`
+                }
+            ],
+            '5-6': [
+                {
+                    shape: 'square_a1',
+                    text: '¿Cuál es el área de este cuadrado? (Lado: 8 m)',
+                    answer: 64,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 100 100">
+                        <rect x="20" y="20" width="60" height="60" rx="4" fill="#10b981" stroke="#047857" stroke-width="4"/>
+                        <text x="50" y="15" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="middle">8 m</text>
+                    </svg>`
+                },
+                {
+                    shape: 'rectangle_a1',
+                    text: '¿Cuál es el área de este rectángulo? (Lados: 9 m y 5 m)',
+                    answer: 45,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 140 100">
+                        <rect x="25" y="25" width="90" height="50" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="4"/>
+                        <text x="70" y="20" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="middle">9 m</text>
+                        <text x="120" y="55" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="start">5 m</text>
+                    </svg>`
+                },
+                {
+                    shape: 'triangle_a1',
+                    text: '¿Cuál es el área del triángulo? (Base: 10 m • Altura: 6 m)',
+                    answer: 30,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 100 100">
+                        <polygon points="50,15 15,85 85,85" fill="#3b82f6" stroke="#1d4ed8" stroke-width="4"/>
+                        <line x1="50" y1="15" x2="50" y2="85" stroke="#dc2626" stroke-width="2" stroke-dasharray="4"/>
+                        <text x="50" y="96" fill="#1e3a8a" font-weight="black" font-size="10" text-anchor="middle">Base: 10 m</text>
+                        <text x="54" y="50" fill="#dc2626" font-weight="black" font-size="10" text-anchor="start">Alt: 6 m</text>
+                    </svg>`
+                },
+                {
+                    shape: 'rectangle_a2',
+                    text: '¿Cuál es el área de este rectángulo? (Lados: 12 m y 6 m)',
+                    answer: 72,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 140 100">
+                        <rect x="25" y="25" width="90" height="50" rx="4" fill="#f59e0b" stroke="#b45309" stroke-width="4"/>
+                        <text x="70" y="20" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="middle">12 m</text>
+                        <text x="120" y="55" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="start">6 m</text>
+                    </svg>`
+                }
+            ],
+            '7-8': [
+                {
+                    shape: 'pitagoras_1',
+                    text: 'Teorema de Pitágoras: ¿Cuánto mide la hipotenusa (X)?',
+                    answer: 5,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 100 100">
+                        <polygon points="25,25 25,80 80,80" fill="#a855f7" stroke="#7e22ce" stroke-width="4"/>
+                        <text x="15" y="55" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="end">3</text>
+                        <text x="50" y="93" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="middle">4</text>
+                        <text x="56" y="50" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="start">X</text>
+                    </svg>`
+                },
+                {
+                    shape: 'pitagoras_2',
+                    text: 'Teorema de Pitágoras: ¿Cuánto mide la hipotenusa (X)?',
+                    answer: 10,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 100 100">
+                        <polygon points="25,25 25,80 80,80" fill="#a855f7" stroke="#7e22ce" stroke-width="4"/>
+                        <text x="15" y="55" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="end">6</text>
+                        <text x="50" y="93" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="middle">8</text>
+                        <text x="56" y="50" fill="#1e3a8a" font-weight="black" font-size="12" text-anchor="start">X</text>
+                    </svg>`
+                },
+                {
+                    shape: 'circulo_area',
+                    text: '¿Cuál es el área aproximada si usamos π = 3? (r = 4 m)',
+                    answer: 48,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="35" fill="#ec4899" stroke="#be185d" stroke-width="4"/>
+                        <line x1="50" y1="50" x2="85" y2="50" stroke="#fff" stroke-width="3"/>
+                        <text x="67" y="42" fill="#fff" font-weight="black" font-size="11" text-anchor="middle">r = 4</text>
+                    </svg>`
+                },
+                {
+                    shape: 'angulos_triangulo',
+                    text: 'Sabiendo que los ángulos de un triángulo suman 180°, ¿cuánto mide X?',
+                    answer: 70,
+                    svg: `
+                    <svg class="w-28 h-28 sm:w-36 sm:h-36" viewBox="0 0 100 100">
+                        <polygon points="50,15 15,85 85,85" fill="#3b82f6" stroke="#1d4ed8" stroke-width="4"/>
+                        <text x="50" y="32" fill="#1e3a8a" font-weight="black" font-size="11" text-anchor="middle">50°</text>
+                        <text x="32" y="78" fill="#1e3a8a" font-weight="black" font-size="11" text-anchor="middle">60°</text>
+                        <text x="70" y="78" fill="#1e3a8a" font-weight="black" font-size="11" text-anchor="middle">X</text>
+                    </svg>`
+                }
+            ]
+        };
 
         const STAGES_TO_WIN = 10;
         
@@ -687,7 +882,7 @@
             opsGrid.innerHTML = '';
             
             const availableOps = grade.id === '1-2' 
-                ? OPERATIONS.filter(o => o.id === 'add' || o.id === 'sub' || o.id === 'mix') 
+                ? OPERATIONS.filter(o => o.id === 'add' || o.id === 'sub' || o.id === 'geom' || o.id === 'mix') 
                 : OPERATIONS;
 
             availableOps.forEach(op => {
@@ -696,7 +891,7 @@
                 btn.onclick = () => startGame(op);
                 btn.innerHTML = `
                     <span class="text-3xl sm:text-5xl group-hover:scale-125 transition-transform drop-shadow-md">${op.emoji}</span>
-                    <span class="text-[10px] sm:text-sm font-bold uppercase tracking-wider">${op.label}</span>
+                    <span class="text-[10px] sm:text-sm font-bold uppercase tracking-wider text-center">${op.label}</span>
                 `;
                 opsGrid.appendChild(btn);
             });
@@ -732,46 +927,74 @@
             
             let currentOp = opId;
             if (opId === 'mix') {
-                const availableOps = gradeId === '1-2' ? ['add', 'sub'] : ['add', 'sub', 'mul', 'div'];
+                const availableOps = gradeId === '1-2' ? ['add', 'sub', 'geom'] : ['add', 'sub', 'mul', 'div', 'geom'];
                 currentOp = availableOps[getRandomInt(0, availableOps.length - 1)];
             }
 
-            switch (gradeId) {
-                case '1-2':
-                    if (currentOp === 'add') { num1 = getRandomInt(1, 15); num2 = getRandomInt(1, 20 - num1); answer = num1 + num2; symbol = '+'; }
-                    else { num1 = getRandomInt(5, 20); num2 = getRandomInt(1, num1); answer = num1 - num2; symbol = '-'; }
-                    break;
-                case '3-4':
-                    if (currentOp === 'add') { num1 = getRandomInt(10, 80); num2 = getRandomInt(10, 99 - num1); answer = num1 + num2; symbol = '+'; }
-                    else if (currentOp === 'sub') { num1 = getRandomInt(20, 99); num2 = getRandomInt(1, num1); answer = num1 - num2; symbol = '-'; }
-                    else if (currentOp === 'mul') { num1 = getRandomInt(2, 10); num2 = getRandomInt(2, 10); answer = num1 * num2; symbol = 'x'; }
-                    else { num2 = getRandomInt(2, 10); answer = getRandomInt(2, 10); num1 = num2 * answer; symbol = '÷'; }
-                    break;
-                case '5-6':
-                    if (currentOp === 'add') { num1 = getRandomInt(100, 500); num2 = getRandomInt(100, 500); answer = num1 + num2; symbol = '+'; }
-                    else if (currentOp === 'sub') { num1 = getRandomInt(200, 999); num2 = getRandomInt(50, num1); answer = num1 - num2; symbol = '-'; }
-                    else if (currentOp === 'mul') { num1 = getRandomInt(5, 20); num2 = getRandomInt(5, 12); answer = num1 * num2; symbol = 'x'; }
-                    else { num2 = getRandomInt(5, 15); answer = getRandomInt(10, 30); num1 = num2 * answer; symbol = '÷'; }
-                    break;
-                case '7-8':
-                    if (currentOp === 'add') { num1 = getRandomInt(-50, 100); num2 = getRandomInt(-50, 100); answer = num1 + num2; symbol = '+'; }
-                    else if (currentOp === 'sub') { num1 = getRandomInt(-50, 100); num2 = getRandomInt(-50, 100); answer = num1 - num2; symbol = '-'; }
-                    else if (currentOp === 'mul') { num1 = getRandomInt(-15, 20); num2 = getRandomInt(-10, 15); answer = num1 * num2; symbol = 'x'; }
-                    else { num2 = getRandomInt(3, 20) * (Math.random() > 0.5 ? 1 : -1); answer = getRandomInt(5, 25) * (Math.random() > 0.5 ? 1 : -1); if (num2 === 0) num2 = 2; num1 = num2 * answer; symbol = '÷'; }
-                    break;
-                default: num1 = 1; num2 = 1; answer = 2; symbol = '+';
-            }
+            // Si es geometría, cargamos una pregunta visual del set
+            if (currentOp === 'geom') {
+                const qList = GEOMETRY_QUESTIONS[gradeId];
+                const randomQ = qList[getRandomInt(0, qList.length - 1)];
+                
+                state.currentQuestion = {
+                    type: 'geometry',
+                    svg: randomQ.svg,
+                    questionText: randomQ.text,
+                    answer: randomQ.answer
+                };
+                
+                // Mostrar Layout Geométrico
+                document.getElementById('math-layout').classList.add('hidden');
+                document.getElementById('geometry-layout').classList.remove('hidden');
+                document.getElementById('geometry-layout').classList.add('flex');
+                
+                document.getElementById('ui-geom-svg-container').innerHTML = randomQ.svg;
+                document.getElementById('ui-geom-question-text').innerText = randomQ.text;
+                
+                speakText(randomQ.text);
+            } else {
+                // Mostrar Layout de Operación Tradicional
+                document.getElementById('math-layout').classList.remove('hidden');
+                document.getElementById('geometry-layout').classList.add('hidden');
+                document.getElementById('geometry-layout').classList.remove('flex');
 
-            const isBossMode = state.progress === STAGES_TO_WIN - 1;
-            if (isBossMode && (symbol === '+' || symbol === '-')) { 
-                num1 += 10; num2 += 10; answer = symbol === '+' ? num1 + num2 : num1 - num2; 
-            }
+                switch (gradeId) {
+                    case '1-2':
+                        if (currentOp === 'add') { num1 = getRandomInt(1, 15); num2 = getRandomInt(1, 20 - num1); answer = num1 + num2; symbol = '+'; }
+                        else { num1 = getRandomInt(5, 20); num2 = getRandomInt(1, num1); answer = num1 - num2; symbol = '-'; }
+                        break;
+                    case '3-4':
+                        if (currentOp === 'add') { num1 = getRandomInt(10, 80); num2 = getRandomInt(10, 99 - num1); answer = num1 + num2; symbol = '+'; }
+                        else if (currentOp === 'sub') { num1 = getRandomInt(20, 99); num2 = getRandomInt(1, num1); answer = num1 - num2; symbol = '-'; }
+                        else if (currentOp === 'mul') { num1 = getRandomInt(2, 10); num2 = getRandomInt(2, 10); answer = num1 * num2; symbol = 'x'; }
+                        else { num2 = getRandomInt(2, 10); answer = getRandomInt(2, 10); num1 = num2 * answer; symbol = '÷'; }
+                        break;
+                    case '5-6':
+                        if (currentOp === 'add') { num1 = getRandomInt(100, 500); num2 = getRandomInt(100, 500); answer = num1 + num2; symbol = '+'; }
+                        else if (currentOp === 'sub') { num1 = getRandomInt(200, 999); num2 = getRandomInt(50, num1); answer = num1 - num2; symbol = '-'; }
+                        else if (currentOp === 'mul') { num1 = getRandomInt(5, 20); num2 = getRandomInt(5, 12); answer = num1 * num2; symbol = 'x'; }
+                        else { num2 = getRandomInt(5, 15); answer = getRandomInt(10, 30); num1 = num2 * answer; symbol = '÷'; }
+                        break;
+                    case '7-8':
+                        if (currentOp === 'add') { num1 = getRandomInt(-50, 100); num2 = getRandomInt(-50, 100); answer = num1 + num2; symbol = '+'; }
+                        else if (currentOp === 'sub') { num1 = getRandomInt(-50, 100); num2 = getRandomInt(-50, 100); answer = num1 - num2; symbol = '-'; }
+                        else if (currentOp === 'mul') { num1 = getRandomInt(-15, 20); num2 = getRandomInt(-10, 15); answer = num1 * num2; symbol = 'x'; }
+                        else { num2 = getRandomInt(3, 20) * (Math.random() > 0.5 ? 1 : -1); answer = getRandomInt(5, 25) * (Math.random() > 0.5 ? 1 : -1); if (num2 === 0) num2 = 2; num1 = num2 * answer; symbol = '÷'; }
+                        break;
+                    default: num1 = 1; num2 = 1; answer = 2; symbol = '+';
+                }
 
-            state.currentQuestion = { num1, num2, symbol, answer };
-            
-            document.getElementById('ui-num1').innerText = num1;
-            document.getElementById('ui-num2').innerText = num2 < 0 ? `(${num2})` : num2;
-            document.getElementById('ui-symbol').innerText = symbol;
+                const isBossMode = state.progress === STAGES_TO_WIN - 1;
+                if (isBossMode && (symbol === '+' || symbol === '-')) { 
+                    num1 += 10; num2 += 10; answer = symbol === '+' ? num1 + num2 : num1 - num2; 
+                }
+
+                state.currentQuestion = { type: 'math', num1, num2, symbol, answer };
+                
+                document.getElementById('ui-num1').innerText = num1;
+                document.getElementById('ui-num2').innerText = num2 < 0 ? `(${num2})` : num2;
+                document.getElementById('ui-symbol').innerText = symbol;
+            }
             
             const input = document.getElementById('ui-input-answer');
             input.value = '';
@@ -795,7 +1018,8 @@
             const vis1 = document.getElementById('ui-vis1');
             const vis2 = document.getElementById('ui-vis2');
             
-            if (state.selectedGrade.id === '1-2') {
+            // Estrellitas visuales solo para 1ro y 2do en operaciones aritméticas sencillas
+            if (state.selectedGrade.id === '1-2' && state.currentQuestion.type === 'math') {
                 const renderStars = (num) => {
                     let starsHTML = '';
                     for(let i=0; i<Math.abs(num); i++) {
@@ -844,8 +1068,12 @@
                 alien.className = "absolute -top-6 sm:-top-10 left-1/2 transform -translate-x-1/2 drop-shadow-xl transition-all duration-300 text-4xl sm:text-6xl animate-bounce-fast scale-125";
                 alien.innerText = "🚧";
                 eqBox.className = "bg-white rounded-xl sm:rounded-2xl p-2 sm:p-4 border-2 sm:border-4 inline-block relative z-10 w-full max-h-full transition-all border-red-300 shadow-inner overflow-hidden flex flex-col items-center justify-center";
-                document.getElementById('ui-symbol').className = "text-[clamp(3rem,9vh,7rem)] font-black text-red-600 tracking-wider leading-none drop-shadow-md";
-                document.getElementById('ui-equals').className = "text-[clamp(3rem,9vh,7rem)] font-black text-red-600 tracking-wider leading-none drop-shadow-md";
+                
+                const symb = document.getElementById('ui-symbol');
+                const equa = document.getElementById('ui-equals');
+                if (symb) symb.className = "text-[clamp(3rem,9vh,7rem)] font-black text-red-600 tracking-wider leading-none drop-shadow-md";
+                if (equa) equa.className = "text-[clamp(3rem,9vh,7rem)] font-black text-red-600 tracking-wider leading-none drop-shadow-md";
+                
                 input.className = "flex-1 w-full h-full bg-white border-2 sm:border-4 rounded-xl px-4 text-3xl sm:text-5xl font-black text-center focus:outline-none focus:ring-4 disabled:opacity-70 shadow-inner transition-all border-red-400 text-red-900 focus:border-red-500 placeholder-red-300";
                 btn.className = "h-full text-white rounded-xl px-4 sm:px-8 font-black text-lg sm:text-2xl transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer shadow-xl bg-gradient-to-b from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 border-b-2 sm:border-b-4 border-red-800";
             } else {
@@ -856,8 +1084,12 @@
                 alien.className = "absolute -top-6 sm:-top-10 left-1/2 transform -translate-x-1/2 drop-shadow-xl transition-all duration-300 text-4xl sm:text-6xl animate-bounce";
                 alien.innerText = "🚂";
                 eqBox.className = "bg-blue-50 rounded-xl sm:rounded-2xl p-2 sm:p-4 border-2 sm:border-4 inline-block relative z-10 w-full max-h-full transition-all border-blue-100 shadow-inner overflow-hidden flex flex-col items-center justify-center";
-                document.getElementById('ui-symbol').className = "text-[clamp(3rem,9vh,7rem)] font-black text-orange-500 tracking-wider leading-none drop-shadow-md";
-                document.getElementById('ui-equals').className = "text-[clamp(3rem,9vh,7rem)] font-black text-orange-500 tracking-wider leading-none drop-shadow-md";
+                
+                const symb = document.getElementById('ui-symbol');
+                const equa = document.getElementById('ui-equals');
+                if (symb) symb.className = "text-[clamp(3rem,9vh,7rem)] font-black text-orange-500 tracking-wider leading-none drop-shadow-md";
+                if (equa) equa.className = "text-[clamp(3rem,9vh,7rem)] font-black text-orange-500 tracking-wider leading-none drop-shadow-md";
+                
                 input.className = "flex-1 w-full h-full bg-white border-2 sm:border-4 rounded-xl px-4 text-3xl sm:text-5xl font-black text-center focus:outline-none focus:border-yellow-400 focus:ring-4 disabled:opacity-70 shadow-inner transition-all border-blue-300 text-blue-900 placeholder-blue-200";
                 btn.className = "h-full text-white rounded-xl px-4 sm:px-8 font-black text-lg sm:text-2xl transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer shadow-xl bg-gradient-to-b from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 border-b-2 sm:border-b-4 border-orange-600";
             }
@@ -1089,45 +1321,71 @@
 
         function generateCompeteQuestion() {
             const gradeId = state.selectedGrade.id;
-            const availableOps = gradeId === '1-2' ? ['add', 'sub'] : ['add', 'sub', 'mul', 'div'];
+            const availableOps = gradeId === '1-2' ? ['add', 'sub', 'geom'] : ['add', 'sub', 'mul', 'div', 'geom'];
             const currentOp = availableOps[getRandomInt(0, availableOps.length - 1)];
             
-            let num1, num2, answer, symbol;
-            switch (gradeId) {
-                case '1-2':
-                    if (currentOp === 'add') { num1 = getRandomInt(1, 15); num2 = getRandomInt(1, 20 - num1); answer = num1 + num2; symbol = '+'; }
-                    else { num1 = getRandomInt(5, 20); num2 = getRandomInt(1, num1); answer = num1 - num2; symbol = '-'; }
-                    break;
-                case '3-4':
-                    if (currentOp === 'add') { num1 = getRandomInt(10, 80); num2 = getRandomInt(10, 99 - num1); answer = num1 + num2; symbol = '+'; }
-                    else if (currentOp === 'sub') { num1 = getRandomInt(20, 99); num2 = getRandomInt(1, num1); answer = num1 - num2; symbol = '-'; }
-                    else if (currentOp === 'mul') { num1 = getRandomInt(2, 10); num2 = getRandomInt(2, 10); answer = num1 * num2; symbol = 'x'; }
-                    else { num2 = getRandomInt(2, 10); answer = getRandomInt(2, 10); num1 = num2 * answer; symbol = '÷'; }
-                    break;
-                case '5-6':
-                    if (currentOp === 'add') { num1 = getRandomInt(100, 500); num2 = getRandomInt(100, 500); answer = num1 + num2; symbol = '+'; }
-                    else if (currentOp === 'sub') { num1 = getRandomInt(200, 999); num2 = getRandomInt(50, num1); answer = num1 - num2; symbol = '-'; }
-                    else if (currentOp === 'mul') { num1 = getRandomInt(5, 20); num2 = getRandomInt(5, 12); answer = num1 * num2; symbol = 'x'; }
-                    else { num2 = getRandomInt(5, 15); answer = getRandomInt(10, 30); num1 = num2 * answer; symbol = '÷'; }
-                    break;
-                case '7-8':
-                    if (currentOp === 'add') { num1 = getRandomInt(-50, 100); num2 = getRandomInt(-50, 100); answer = num1 + num2; symbol = '+'; }
-                    else if (currentOp === 'sub') { num1 = getRandomInt(-50, 100); num2 = getRandomInt(-50, 100); answer = num1 - num2; symbol = '-'; }
-                    else if (currentOp === 'mul') { num1 = getRandomInt(-15, 20); num2 = getRandomInt(-10, 15); answer = num1 * num2; symbol = 'x'; }
-                    else { num2 = getRandomInt(3, 20) * (Math.random() > 0.5 ? 1 : -1); answer = getRandomInt(5, 25) * (Math.random() > 0.5 ? 1 : -1); if (num2 === 0) num2 = 2; num1 = num2 * answer; symbol = '÷'; }
-                    break;
+            if (currentOp === 'geom') {
+                const qList = GEOMETRY_QUESTIONS[gradeId];
+                const randomQ = qList[getRandomInt(0, qList.length - 1)];
+                
+                competeState.question = {
+                    type: 'geometry',
+                    svg: randomQ.svg,
+                    questionText: randomQ.text,
+                    answer: randomQ.answer
+                };
+            } else {
+                let num1, num2, answer, symbol;
+                switch (gradeId) {
+                    case '1-2':
+                        if (currentOp === 'add') { num1 = getRandomInt(1, 15); num2 = getRandomInt(1, 20 - num1); answer = num1 + num2; symbol = '+'; }
+                        else { num1 = getRandomInt(5, 20); num2 = getRandomInt(1, num1); answer = num1 - num2; symbol = '-'; }
+                        break;
+                    case '3-4':
+                        if (currentOp === 'add') { num1 = getRandomInt(10, 80); num2 = getRandomInt(10, 99 - num1); answer = num1 + num2; symbol = '+'; }
+                        else if (currentOp === 'sub') { num1 = getRandomInt(20, 99); num2 = getRandomInt(1, num1); answer = num1 - num2; symbol = '-'; }
+                        else if (currentOp === 'mul') { num1 = getRandomInt(2, 10); num2 = getRandomInt(2, 10); answer = num1 * num2; symbol = 'x'; }
+                        else { num2 = getRandomInt(2, 10); answer = getRandomInt(2, 10); num1 = num2 * answer; symbol = '÷'; }
+                        break;
+                    case '5-6':
+                        if (currentOp === 'add') { num1 = getRandomInt(100, 500); num2 = getRandomInt(100, 500); answer = num1 + num2; symbol = '+'; }
+                        else if (currentOp === 'sub') { num1 = getRandomInt(200, 999); num2 = getRandomInt(50, num1); answer = num1 - num2; symbol = '-'; }
+                        else if (currentOp === 'mul') { num1 = getRandomInt(5, 20); num2 = getRandomInt(5, 12); answer = num1 * num2; symbol = 'x'; }
+                        else { num2 = getRandomInt(5, 15); answer = getRandomInt(10, 30); num1 = num2 * answer; symbol = '÷'; }
+                        break;
+                    case '7-8':
+                        if (currentOp === 'add') { num1 = getRandomInt(-50, 100); num2 = getRandomInt(-50, 100); answer = num1 + num2; symbol = '+'; }
+                        else if (currentOp === 'sub') { num1 = getRandomInt(-50, 100); num2 = getRandomInt(-50, 100); answer = num1 - num2; symbol = '-'; }
+                        else if (currentOp === 'mul') { num1 = getRandomInt(-15, 20); num2 = getRandomInt(-10, 15); answer = num1 * num2; symbol = 'x'; }
+                        else { num2 = getRandomInt(3, 20) * (Math.random() > 0.5 ? 1 : -1); answer = getRandomInt(5, 25) * (Math.random() > 0.5 ? 1 : -1); if (num2 === 0) num2 = 2; num1 = num2 * answer; symbol = '÷'; }
+                        break;
+                }
+                
+                competeState.question = { type: 'math', num1, num2, symbol, answer };
             }
-            
-            competeState.question = { num1, num2, symbol, answer };
             updateCompeteUI();
         }
 
         function updateCompeteUI() {
             const q = competeState.question;
-            const num2Str = q.num2 < 0 ? `(${q.num2})` : q.num2;
-            document.getElementById('compete-eq-num1').innerText = q.num1;
-            document.getElementById('compete-eq-symbol').innerText = q.symbol;
-            document.getElementById('compete-eq-num2').innerText = num2Str;
+            
+            if (q.type === 'geometry') {
+                document.getElementById('compete-math-layout').classList.add('hidden');
+                document.getElementById('compete-geometry-layout').classList.remove('hidden');
+                document.getElementById('compete-geometry-layout').classList.add('flex');
+                
+                document.getElementById('compete-geom-svg-container').innerHTML = q.svg;
+                document.getElementById('compete-geom-question-text').innerText = q.questionText;
+            } else {
+                document.getElementById('compete-math-layout').classList.remove('hidden');
+                document.getElementById('compete-geometry-layout').classList.add('hidden');
+                document.getElementById('compete-geometry-layout').classList.remove('flex');
+
+                const num2Str = q.num2 < 0 ? `(${q.num2})` : q.num2;
+                document.getElementById('compete-eq-num1').innerText = q.num1;
+                document.getElementById('compete-eq-symbol').innerText = q.symbol;
+                document.getElementById('compete-eq-num2').innerText = num2Str;
+            }
 
             document.getElementById('t1-input-text').innerText = competeState.t1Input || '?';
             document.getElementById('t2-input-text').innerText = competeState.t2Input || '?';
